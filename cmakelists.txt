@@ -9,6 +9,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
+#TODO   Should find a way to statically link these
+#       So that we don't need to link all of these libraries also 
+#       to the project
 find_package(GLEW 2.0 REQUIRED) 
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
