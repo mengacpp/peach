@@ -1,5 +1,5 @@
 # [peach](https://github.com/mengadev/peach)
-Peach is a game engine im developing on my own, in the future you will find **Devlogs at my [YouTube channel](https://www.youtube.com/@MengaWasTaken)**.
+Peach is a game engine im developing on my own, in the future you will find **Devlogs on my [YouTube channel](https://www.youtube.com/@MengaWasTaken)**.
 
 ## Index
 
@@ -11,28 +11,33 @@ Peach is a game engine im developing on my own, in the future you will find **De
 
 ### 1.1 Dependencies
 
-Libraries you need to install before building the project:
+To build the project, ensure you have **[CMake](https://cmake.org)** and **[make](https://www.gnu.org/software/make/)** installed on your device.
+
+You'll also need to install the following libraries:
+
 - *[glfw](https://github.com/glfw/glfw)*
 - *[GLEW](https://github.com/nigels-com/glew)*
 
----
-Other libraries used in the project but provided by the repostory as submodules:
+Other required libraries are provided by the repository as submodules:
 
-- *[DearImGui](https://github.com/ocornut/imgui)*
+- *[Dear ImGui](https://github.com/ocornut/imgui)*
+
+You don't need to install these separately.
  
 ### 1.2 Building the project
 
-After making sure you have all the [dependencies required](#dependencies), **clone the repo** on your hard disk *making sure to init the submodules*:
+After ensuring you have all the [required dependencies](#11-dependencies), clone the repository on your hard disk. Make sure to initialize the submodules:
 
 ```bash
 git clone --recurse-submodules https://github.com/mengadev/peach.git
 ```
 
-now just `cd` into the directory and **use CMake to build the project**:
+Next, navigate to the project directory **and use CMake and make to build the project**. It will look something like this:
 
 ```bash
 mkdir build
 cd build
 cmake ..
+make
 ```
-
+This will compile and build the Peach game engine library aswell as Peachtree, the editor.
