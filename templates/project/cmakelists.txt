@@ -17,7 +17,7 @@ find_package(OpenGL REQUIRED)
 
 #TODO   need to install the engine lib on the device 
 #       so that we can find it from anywhere on the device
-#?      Use install() fn of cmake?
+#       Use install() fn of cmake?
 find_library(PEACH_ENGINE peachEngine PATHS "../../build/peachEngine/")
 
 if(PEACH_ENGINE)
@@ -32,7 +32,9 @@ else()
 endif()
 
 target_include_directories( ${CMAKE_PROJECT_NAME} 
-                            PRIVATE "../../peachEngine/include")
+                            PRIVATE 
+                            "../../peachEngine/include"
+                            "../../vendor/imgui")
 
 target_compile_definitions( ${CMAKE_PROJECT_NAME} 
                             PUBLIC -DPH_PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\")
