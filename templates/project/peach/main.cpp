@@ -14,20 +14,11 @@ using namespace ph::core;
 
 int main()
 {
-    Application application(PH_PROJECT_NAME);
+    //  We are not handling errors here, every error should
+    //  be handled in the core
+    Application app(PH_PROJECT_NAME, 1280, 720);
 
-    if(!EM.is_ok())
-    {
-        // handle not fatal errors
-    }
-    
-    application.run();
-
-    if(!EM.is_ok())
-    {
-        // handle not fatal errors
-    }
-
+    app.run();
     
     return 0;
 }

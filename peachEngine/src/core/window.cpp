@@ -1,5 +1,9 @@
 #include "peach/core/window.hpp"
 
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+
 #include "peach/core/errors.hpp"
 
 #include "peach/log.hpp"
@@ -21,7 +25,7 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
         return;
     }
 
-    std::string glsl_version = "#version 330 core";
+    std::string glsl_version = "#version 150";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -37,6 +41,20 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
     }
 
     glfwMakeContextCurrent(m_glfw_window);
+    glfwSwapInterval(1); // Enable vsync
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(m_glfw_window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version.c_str());
 
     if(glewInit() != GLEW_OK)
     {
@@ -68,16 +86,34 @@ void ph::core::Window::open()
 
     while (!glfwWindowShouldClose(m_glfw_window))
     {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(m_glfw_window);
-
         /* Poll for and process events */
         glfwPollEvents();
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        {
+            ImGui::ShowDemoWindow();
+        }
+
+        ImGui::Render();
+
+        int display_w, display_h;
+        glfwGetFramebufferSize(m_glfw_window, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        glfwSwapBuffers(m_glfw_window);
+
     }
 
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(m_glfw_window);
     glfwTerminate();
     EM.ok();
 }
