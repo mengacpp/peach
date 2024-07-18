@@ -1,6 +1,6 @@
 #pragma once
 
-#include "peach/pch/pch.hpp"
+#include "peach/pch.hpp"
 
 #include "peach/core.hpp"
 
@@ -13,6 +13,12 @@ enum class ErrorType
     Ok,
 
     Fatal,
+
+    window_glfw_NotInit,
+    window_glfw_WindowNotCreated,
+    window_glew_NotInit,
+    window_glfw_OpenWithoutWindow,
+
 };
 #undef et
 
@@ -23,7 +29,7 @@ public:
     ErrorManager() : m_err(ErrorType::Ok) {};
 
     ErrorType get_err() {return m_err; }
-    inline void set_err(ErrorType err);
+    void set_err(ErrorType err);
     inline void ok() {m_err = ErrorType::Ok; }
 
     inline bool is_ok() {return m_err == ErrorType::Ok;}

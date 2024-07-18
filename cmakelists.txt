@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.20...3.50 FATAL_ERROR)
 
-project(peachEngine VERSION 0.0.0 
-                    DESCRIPTION "Peach game engine"
-                    HOMEPAGE_URL "https://github.com/mengadev/peach"
-                    LANGUAGES CXX)
+#TODO   Always remember to update the current version
+project(peachEngine VERSION         0.1.0 
+                    DESCRIPTION     "Peach game engine"
+                    HOMEPAGE_URL    "https://github.com/mengadev/peach"
+                    LANGUAGES       CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

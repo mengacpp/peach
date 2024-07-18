@@ -28,7 +28,11 @@ endif()
 
 target_compile_definitions( ${CMAKE_PROJECT_NAME} PUBLIC 
                             -DPH_CORE
-                            ${PEACH_BUILD_TYPE})
+                            ${PEACH_BUILD_TYPE}
+                            -DPH_VERSION=\"${CMAKE_PROJECT_VERSION}\"
+                            -DPH_VERSION_MAJ=${CMAKE_PROJECT_VERSION_MAJOR}
+                            -DPH_VERSION_MIN=${CMAKE_PROJECT_VERSION_MINOR}
+                            -DPH_VERSION_PATCH=${CMAKE_PROJECT_VERSION_PATCH})
 
 target_precompile_headers(  ${CMAKE_PROJECT_NAME} PUBLIC
-                            include/peach/pch/pch.hpp)
+                            include/peach/pch.hpp)

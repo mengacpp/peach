@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pch/pch.hpp"
+#include "pch.hpp"
 
 // Reset
 #define PH_ANSI_RESET "\033[0m"
@@ -92,7 +92,10 @@
 
 #ifdef PH_DEBUG
 #define PH_LOG_DBG(message)\
-    PH_LOG(PH_ANSI_BOLD_INTENSE_CYAN "Debug: " PH_ANSI_RESET << message)
+    PH_LOG(PH_ANSI_INTENSE_CYAN << message << PH_ANSI_RESET)
+#define PH_LOG_DBG_INFO(message)\
+    std::cout << PH_ANSI_BOLD_INTENSE_CYAN << message << PH_ANSI_RESET "\n";
 #else
 #define PH_LOG_DBG(message)
+#define PH_LOG_DBG_INFO(message)
 #endif
