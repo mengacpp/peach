@@ -1,0 +1,29 @@
+cmake_minimum_required(VERSION 3.20...3.50 FATAL_ERROR)
+
+set(PEACHTREE "peachtree")
+project(PEACHTREE LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+
+file(GLOB_RECURSE ASSETS_SOURCES "assets/*.cpp")
+file(GLOB_RECURSE PEACH_SOURCES "peach/*.cpp")
+add_executable(${PEACHTREE}    ${ASSETS_SOURCES}
+                                        ${PEACH_SOURCES})
+
+find_library(PEACH_ENGINE peachEngine PATH_SUFFIXES lib)
+
+target_link_libraries(  ${PEACHTREE} 
+                        PRIVATE peachEngine
+                                glfw 
+                                GLEW::GLEW 
+                                OpenGL::GL)
+
+target_include_directories( ${PEACHTREE} 
+                            PRIVATE 
+                            "../peachEngine/include"
+                            "../vendor/imgui")
+
+target_compile_definitions( ${PEACHTREE} 
+                            PUBLIC -DPH_PROJECT_NAME=\"${PEACHTREE}\")

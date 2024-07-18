@@ -17,4 +17,8 @@ find_package(GLEW 2.0 REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
+
 add_subdirectory(peachEngine)
+add_subdirectory(peachtree)
+
+install(TARGETS peachEngine)

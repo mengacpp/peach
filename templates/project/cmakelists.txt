@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.20...3.50 FATAL_ERROR)
 
-if(NOT DEFINED PROJECT_NAME OR "${PROJECT_NAME}" STREQUAL "")
-    set(PROJECT_NAME "empy-project")
+if(NOT DEFINED PH_PROJECT_NAME OR "${PH_PROJECT_NAME}" STREQUAL "")
+    set(PH_PROJECT_NAME "empty-project")
 endif()
 
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(${PH_PROJECT_NAME} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -19,10 +19,7 @@ find_package(GLEW 2.0 REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-#TODO   need to install the engine lib on the device 
-#       so that we can find it from anywhere on the device
-#       Use install() fn of cmake?
-find_library(PEACH_ENGINE peachEngine PATHS "../../build/peachEngine/")
+find_library(PEACH_ENGINE peachEngine PATH_SUFFIXES lib)
 
 if(PEACH_ENGINE)
     message(STATUS "Found PeachEngine library at ${PEACH_ENGINE}")
