@@ -3,9 +3,9 @@ Peach is a game engine im developing on my own, in the future you will find **De
 
 ## Index
 
-1. **[Building](#building)**
-2. **About Peach** *⚠️ coming soon*
-3. **Getting started** *⚠️ coming soon*
+1. **[Building Peach](#1-building)**
+2. **[About Peach](#2-about-peach)** *
+3. **[Getting started](#3-getting-started)** *
 
 ## 1. Building
 
@@ -32,12 +32,20 @@ After ensuring you have all the [required dependencies](#11-dependencies), clone
 git clone --recurse-submodules https://github.com/mengadev/peach.git
 ```
 
-Next, navigate to the project directory **and use CMake and make to build the project**. It will look something like this:
+Next, navigate to the project directory **and use CMake and make to build and install Peach** on your device. It will look something like this:
 
 ```bash
 mkdir build
 cd build
-cmake ..
-make
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make install
 ```
 This will compile and build the Peach game engine library aswell as Peachtree, the editor.
+
+## 2. About Peach
+
+Not much to say yet
+
+## 3. Getting started
+
+Not much to say yet
