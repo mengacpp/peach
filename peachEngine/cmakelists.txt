@@ -21,14 +21,14 @@ target_include_directories( ${CMAKE_PROJECT_NAME} PUBLIC
                             ${OPENGL_INCLUDE_DIR})
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(PEACH_BUILD_TYPE PH_RELEASE)
+    set(PEACH_BUILD_TYPE -DPH_RELEASE)
 else()
-    set(PEACH_BUILD_TYPE PH_DEBUG)
+    set(PEACH_BUILD_TYPE -DPH_DEBUG)
 endif()
 
 target_compile_definitions( ${CMAKE_PROJECT_NAME} PUBLIC 
                             -DPH_CORE
-                            -D${PEACH_BUILD_TYPE})
+                            ${PEACH_BUILD_TYPE})
 
 target_precompile_headers(  ${CMAKE_PROJECT_NAME} PUBLIC
                             include/peach/pch/pch.hpp)

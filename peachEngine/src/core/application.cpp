@@ -1,10 +1,17 @@
 #include "peach/core/application.hpp"
 
-ph::core::Application::Application(std::string name)
+#include "peach/log.hpp"
+
+namespace ph::core
+{
+
+Application::Application(std::string name)
 {
     EM.ok();
 }
-void ph::core::Application::run()
+void Application::run()
 {
     EM.ok();
+}
+
 }

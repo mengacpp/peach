@@ -3,10 +3,13 @@
 #include "peach/core/application.hpp"
 #include "peach/core/errors.hpp"
 
+#include "peach/peach.hpp"
+
 #ifndef PH_PROJECT_NAME
 #define PH_PROJECT_NAME "unknown"
 #endif
 
+using namespace ph;
 using namespace ph::core;
 
 int main()
@@ -24,6 +27,7 @@ int main()
     {
         // handle not fatal errors
     }
+
     
     return 0;
 }
