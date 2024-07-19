@@ -8,6 +8,9 @@
 
 #include "peach/log.hpp"
 
+#include "peach/events/window_events.hpp"
+#include "peach/events/input_events.hpp"
+
 void glfwErrorCallback(int error, const char* description) {
     PH_LOG_ERR("GLFW Error #" << error << ": " << description);
 }
@@ -73,6 +76,94 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
     PH_LOG_DBG_INFO(vendor << " - " << renderer);
     PH_LOG_DBG_INFO("GL " << version << " - GLSL " << glslVersion);
 
+    glfwSetWindowUserPointer(m_glfw_window, this);
+
+    #pragma region callbacks
+
+    #define CALL_EVENT_CB\
+        {\
+        Window &data = *(Window*)glfwGetWindowUserPointer(window);\
+        WindowEventCallback cb = data.get_event_callback();\
+        cb(e);\
+        }
+
+    glfwSetWindowPosCallback(m_glfw_window, [](GLFWwindow *window, int x, int y){
+        WindowRepositionedEvent e(x, y);
+        CALL_EVENT_CB
+    });
+
+    glfwSetWindowSizeCallback(m_glfw_window, [](GLFWwindow *window, int w, int h){
+        WindowResizedEvent e(w, h);
+        CALL_EVENT_CB
+    });
+
+    glfwSetWindowCloseCallback(m_glfw_window, [](GLFWwindow *window){
+        WindowClosedEvent e;
+        CALL_EVENT_CB
+    });
+
+    glfwSetWindowRefreshCallback(m_glfw_window, [](GLFWwindow *window){
+        WindowRefreshedEvent e;
+        CALL_EVENT_CB
+    });
+
+    glfwSetWindowFocusCallback(m_glfw_window, [](GLFWwindow *window, int focused){
+        WindowFocusedEvent e(focused == GLFW_TRUE ? true : false);
+        CALL_EVENT_CB
+    });
+
+    glfwSetWindowIconifyCallback(m_glfw_window, [](GLFWwindow *window, int iconified){
+        WindowMinimizedEvent e(iconified == GLFW_TRUE ? true : false);
+        CALL_EVENT_CB
+    });
+
+    glfwSetFramebufferSizeCallback(m_glfw_window, [](GLFWwindow *window, int w, int h){
+        WindowFrameBufferResizedEvent e(w, h);
+        CALL_EVENT_CB
+    });
+
+    glfwSetWindowContentScaleCallback(m_glfw_window, [](GLFWwindow *window, float x, float y){
+        WindowContentScaledEvent e(x, y);
+        CALL_EVENT_CB
+    });
+
+    glfwSetMouseButtonCallback(m_glfw_window, [](GLFWwindow *window, int button, int action, int mods){
+        MouseButtonPressedEvent e(button, action, mods);
+        CALL_EVENT_CB
+    });
+
+    glfwSetCursorPosCallback(m_glfw_window, [](GLFWwindow *window, double x, double y){
+        MouseMovedEvent e(x, y);
+        CALL_EVENT_CB
+    });
+
+    glfwSetCursorEnterCallback(m_glfw_window, [](GLFWwindow *window, int entered){
+        MouseEnteredEvent e(entered == GLFW_TRUE ? true : false);
+        CALL_EVENT_CB
+    });
+
+    glfwSetScrollCallback(m_glfw_window, [](GLFWwindow *window, double x, double y){
+        MouseScrolledEvent e(x, y);
+        CALL_EVENT_CB
+    });
+
+    glfwSetKeyCallback(m_glfw_window, [](GLFWwindow *window, int key, int scancode, int action, int mods){
+        KeyPressedEvent e(key, scancode, action, mods);
+        CALL_EVENT_CB
+    });
+
+    glfwSetCharModsCallback(m_glfw_window, [](GLFWwindow *window, unsigned int codepoint, int mods){
+        CharPressedEvent e(codepoint, mods);
+        CALL_EVENT_CB
+    });
+
+    glfwSetDropCallback(m_glfw_window, [](GLFWwindow *window, int count, const char** paths){
+        WindowFileDroppedEvent e(count, paths);
+        CALL_EVENT_CB
+    });
+
+    #pragma endregion
+
     EM.ok();
 }
 
@@ -81,6 +172,12 @@ void ph::core::Window::open()
     if(!m_glfw_window)
     {
         EM.set_err(ErrorType::window_glfw_OpenWithoutWindow);
+        return;
+    }
+
+    if(!m_event_callback)
+    {
+        EM.set_err(ErrorType::window_EventCbNotSet);
         return;
     }
 
@@ -118,6 +215,11 @@ void ph::core::Window::open()
     EM.ok();
 }
 
+void ph::core::Window::set_event_callback(WindowEventCallback cb)
+{
+    m_event_callback = cb;
+    EM.ok();
+}
 void ph::core::Window::close()
 {
     glfwSetWindowShouldClose(m_glfw_window, true);

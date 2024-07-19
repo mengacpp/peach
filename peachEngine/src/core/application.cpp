@@ -15,6 +15,8 @@ Application::Application(   std::string name,
     {
         exit(-1);
     }
+    WindowEventCallback cb = [this](Event& e){this->on_event(e);};
+    m_window.set_event_callback(cb);
 
     EM.ok();
 }
@@ -30,4 +32,8 @@ void Application::run()
     EM.ok();
 }
 
+void Application::on_event(Event &e)
+{
+    PH_LOG_DBG_INFO(e.to_string());
+}
 }

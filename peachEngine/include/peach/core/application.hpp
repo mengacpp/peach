@@ -17,6 +17,7 @@ public:
                 unsigned int scr_height = 480);
 
     void run();
+    void on_event(Event &e);
 private:
     Window m_window;
 };

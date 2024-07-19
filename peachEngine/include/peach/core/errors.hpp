@@ -18,6 +18,7 @@ enum class ErrorType
     window_glfw_WindowNotCreated,
     window_glew_NotInit,
     window_glfw_OpenWithoutWindow,
+    window_EventCbNotSet,
 
 };
 #undef et
