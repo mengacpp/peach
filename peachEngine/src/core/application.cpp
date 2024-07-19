@@ -8,7 +8,7 @@ namespace ph::core
 Application::Application(   std::string name,
                             unsigned int scr_width,
                             unsigned int scr_height)
-    : m_window(name, scr_width, scr_height), m_should_close(false)
+    : m_window(name, scr_width, scr_height), m_renderer(),  m_should_close(false)
 {
     // checking window constructor
     if(!EM.is_ok())
@@ -24,7 +24,11 @@ void Application::run()
 {
     while(!m_should_close)
     {
-        m_window.update();
+        m_window.poll_events();
+
+        m_renderer.render();
+        
+        m_window.swap_buffers();
     }
 
     m_window.close();

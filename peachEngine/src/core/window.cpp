@@ -183,31 +183,22 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
     EM.ok();
 }
 
-void ph::core::Window::update()
+void ph::core::Window::poll_events()
 {
-
-    /* Poll for and process events */
     glfwPollEvents();
-
-    //TODO: Rendering should be handled in the renderer
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    {
-        // we call update callback from here
-    }
 
     glfwGetFramebufferSize(m_glfw_window, &m_width, &m_height);
     glViewport(0, 0, m_width, m_height);
 
-    //TODO: This also should be handled in the renderer
-    ImGui::Render();
-    glClear(GL_COLOR_BUFFER_BIT);
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    EM.ok();
+
+}
+void ph::core::Window::swap_buffers()
+{
     glfwSwapBuffers(m_glfw_window);
 
     EM.ok();
+
 }
 
 void ph::core::Window::set_event_callback(WindowEventCallback cb)

@@ -20,7 +20,9 @@ public:
             unsigned int width, 
             unsigned int height);
     
-    void update();
+    void poll_events();
+
+    void swap_buffers();
 
     void set_event_callback(WindowEventCallback cb);
     inline WindowEventCallback get_event_callback() const 

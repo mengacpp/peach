@@ -5,6 +5,7 @@
 #include "peach/core.hpp"
 #include "peach/core/errors.hpp"
 #include "peach/core/window.hpp"
+#include "peach/core/renderer.hpp"
 
 #include "peach/events/event.hpp"
 #include "peach/events/window_events.hpp"
@@ -21,12 +22,16 @@ public:
                 unsigned int scr_height = 480);
 
     void run();
+
 private:
     void on_event(Event &e);
 
+private:
+    Window m_window;
+    Renderer m_renderer;
+    
     bool on_window_closed(WindowClosedEvent &e);
     bool on_key_pressed(KeyPressedEvent &e);
-    Window m_window;
     bool m_should_close;
 };
 }
