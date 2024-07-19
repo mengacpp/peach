@@ -80,6 +80,11 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
 
     #pragma region callbacks
 
+    // Unusued callbacks:
+    // * Monitor
+    // * Char
+    // Remember to call ImGui's callbacks when setting one
+
     #define CALL_EVENT_CB\
         {\
         Window &data = *(Window*)glfwGetWindowUserPointer(window);\
@@ -108,6 +113,7 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
     });
 
     glfwSetWindowFocusCallback(m_glfw_window, [](GLFWwindow *window, int focused){
+        ImGui_ImplGlfw_WindowFocusCallback(window, focused);
         WindowFocusedEvent e(focused == GLFW_TRUE ? true : false);
         CALL_EVENT_CB
     });
@@ -128,26 +134,31 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
     });
 
     glfwSetMouseButtonCallback(m_glfw_window, [](GLFWwindow *window, int button, int action, int mods){
+        ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
         MouseButtonPressedEvent e(button, action, mods);
         CALL_EVENT_CB
     });
 
     glfwSetCursorPosCallback(m_glfw_window, [](GLFWwindow *window, double x, double y){
+        ImGui_ImplGlfw_CursorPosCallback(window, x, y);
         MouseMovedEvent e(x, y);
         CALL_EVENT_CB
     });
 
     glfwSetCursorEnterCallback(m_glfw_window, [](GLFWwindow *window, int entered){
+        ImGui_ImplGlfw_CursorEnterCallback(window, entered);
         MouseEnteredEvent e(entered == GLFW_TRUE ? true : false);
         CALL_EVENT_CB
     });
 
     glfwSetScrollCallback(m_glfw_window, [](GLFWwindow *window, double x, double y){
+        ImGui_ImplGlfw_ScrollCallback(window, x, y);
         MouseScrolledEvent e(x, y);
         CALL_EVENT_CB
     });
 
     glfwSetKeyCallback(m_glfw_window, [](GLFWwindow *window, int key, int scancode, int action, int mods){
+        ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
         KeyPressedEvent e(key, scancode, action, mods);
         CALL_EVENT_CB
     });
