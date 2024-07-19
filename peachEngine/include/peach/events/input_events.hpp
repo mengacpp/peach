@@ -1,6 +1,8 @@
 #pragma once
-
 #include "event.hpp"
+
+#include <sstream>
+
 
 namespace ph::core
 {
@@ -60,6 +62,14 @@ public:
 
     PH_SET_EVENT_TYPE(keyboard_KeyPressed)
     PH_SET_EVENT_CATEGORY(EventCategory_Input | EventCategory_Keyboard) 
+
+    std::string to_string() override {
+        std::stringstream ss;
+        ss  << "Key pressed #" << key << " - scancode = " << scancode <<
+            ", action = " << action << ", mods = " << mods;
+
+        return ss.str();
+    }
 
     int key, scancode, action, mods;
 };

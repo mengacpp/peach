@@ -85,9 +85,14 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
     // * Char
     // Remember to call ImGui's callbacks when setting one
 
+    //TODO: Converts all GLFW_ parameters to peach using modern C++,
+    // so its easier for the user
+
+    #define GET_WINDOW_PTR(identifier) Window &identifier = *(Window*)glfwGetWindowUserPointer(window)
+
     #define CALL_EVENT_CB\
         {\
-        Window &data = *(Window*)glfwGetWindowUserPointer(window);\
+        GET_WINDOW_PTR(data);\
         WindowEventCallback cb = data.get_event_callback();\
         cb(e);\
         }
@@ -178,51 +183,30 @@ ph::core::Window::Window(std::string name, unsigned int width, unsigned int heig
     EM.ok();
 }
 
-void ph::core::Window::open()
+void ph::core::Window::update()
 {
-    if(!m_glfw_window)
+
+    /* Poll for and process events */
+    glfwPollEvents();
+
+    //TODO: Rendering should be handled in the renderer
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
     {
-        EM.set_err(ErrorType::window_glfw_OpenWithoutWindow);
-        return;
+        // we call update callback from here
     }
 
-    if(!m_event_callback)
-    {
-        EM.set_err(ErrorType::window_EventCbNotSet);
-        return;
-    }
+    glfwGetFramebufferSize(m_glfw_window, &m_width, &m_height);
+    glViewport(0, 0, m_width, m_height);
 
-    while (!glfwWindowShouldClose(m_glfw_window))
-    {
-        /* Poll for and process events */
-        glfwPollEvents();
+    //TODO: This also should be handled in the renderer
+    ImGui::Render();
+    glClear(GL_COLOR_BUFFER_BIT);
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    glfwSwapBuffers(m_glfw_window);
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        {
-            ImGui::ShowDemoWindow();
-        }
-
-        ImGui::Render();
-
-        int display_w, display_h;
-        glfwGetFramebufferSize(m_glfw_window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        glfwSwapBuffers(m_glfw_window);
-
-    }
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(m_glfw_window);
-    glfwTerminate();
     EM.ok();
 }
 
@@ -233,6 +217,11 @@ void ph::core::Window::set_event_callback(WindowEventCallback cb)
 }
 void ph::core::Window::close()
 {
-    glfwSetWindowShouldClose(m_glfw_window, true);
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(m_glfw_window);
+    glfwTerminate();
     EM.ok();
 }

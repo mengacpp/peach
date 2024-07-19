@@ -41,8 +41,12 @@ enum EventCategory
 };
 #undef CATEGORY
 
+template<typename T>
+using EventFunction = std::function<bool(T&)>;
+
 class PEACH_API Event
 {
+    friend class EventDispatcher;
 public:
     virtual EventType get_type() const = 0;
     virtual int get_category() const = 0;
@@ -52,9 +56,32 @@ public:
 
     inline bool is_in_category(EventCategory category) const
     {
-        return get_category() | category;
+        return get_category() & category;
     }
+
+protected:
+    bool m_handled = false;
 };
+class PEACH_API EventDispatcher
+{
+public:
+    EventDispatcher(Event &e) : m_event(e) {}
+
+    template<typename T>
+    bool dispatch(EventFunction<T> fn){
+        if(m_event.get_type() == T::get_type_s())
+        {
+            m_event.m_handled = fn(*(T*)&m_event);
+            return true;
+        }
+        
+        return false;
+    }
+private:
+    Event& m_event;
+};
+
+
 
 #define PH_SET_EVENT_TYPE(t)\
     std::string get_name() const override{ return #t;}\

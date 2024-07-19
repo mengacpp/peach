@@ -6,6 +6,10 @@
 #include "peach/core/errors.hpp"
 #include "peach/core/window.hpp"
 
+#include "peach/events/event.hpp"
+#include "peach/events/window_events.hpp"
+#include "peach/events/input_events.hpp"
+
 
 namespace ph::core
 {
@@ -17,8 +21,12 @@ public:
                 unsigned int scr_height = 480);
 
     void run();
-    void on_event(Event &e);
 private:
+    void on_event(Event &e);
+
+    bool on_window_closed(WindowClosedEvent &e);
+    bool on_key_pressed(KeyPressedEvent &e);
     Window m_window;
+    bool m_should_close;
 };
 }

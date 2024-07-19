@@ -20,7 +20,7 @@ public:
             unsigned int width, 
             unsigned int height);
     
-    void open();
+    void update();
 
     void set_event_callback(WindowEventCallback cb);
     inline WindowEventCallback get_event_callback() const 
@@ -33,7 +33,7 @@ private:
     std::string m_name;
     
     WindowEventCallback m_event_callback;
-    unsigned int m_width, m_height;
+    int m_width, m_height;
 };
 
 
